@@ -20,7 +20,7 @@ namespace HallPass
 
         public override string ToString()
         {
-            return lastName + ", " + firstName;
+            return studentNumber + " : " + grade + " : " + lastName + ", " + firstName + " : " + homeroomTeacher;
         }
     }
 }

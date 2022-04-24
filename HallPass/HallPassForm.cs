@@ -6,17 +6,11 @@ using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
 using System.Data;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace HallPass
@@ -25,6 +19,7 @@ namespace HallPass
     {
         // Define request parameters.
         String spreadsheetId = ConfigurationManager.AppSettings["sheet"];
+        String tab = ConfigurationManager.AppSettings["tab"];
         DataTable studentsData = new DataTable();
         SheetsService service;
         public HallPassForm()
@@ -106,7 +101,7 @@ namespace HallPass
                     Values = new List<IList<object>> { new List<object> {
                     time.ToString(), type, id, name
                 } } };
-                var append = service.Spreadsheets.Values.Append(range, spreadsheetId, "Passes!A:A");
+                var append = service.Spreadsheets.Values.Append(range, spreadsheetId, tab+"!A:A");
                 append.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
                 var resp = append.Execute();
             }
