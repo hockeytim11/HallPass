@@ -88,18 +88,18 @@ namespace HallPass
                 string homeroom = (string)student.Cells[4].Value;
 
                 labelPreview.Text += $@"
-            Type: {type}
-            Time: { time }
-            ID: {id}
-            Name: {name}
-            Homeroom: {homeroom}
-            Grade: {grade}
+Type:     {type}
+Time:     {time}
+ID:       {id}
+Name:     {name}
+Homeroom: {homeroom}
+Grade:    {grade}
             ";
 
                 var range = new ValueRange()
                 {
                     Values = new List<IList<object>> { new List<object> {
-                    time.ToString(), type, id, name
+                    time.ToString(), type, id, name, grade, homeroom
                 } } };
                 var append = service.Spreadsheets.Values.Append(range, spreadsheetId, tab+"!A:A");
                 append.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
@@ -112,7 +112,10 @@ namespace HallPass
             string queries = "";
             if(!String.IsNullOrEmpty(nameSearch.Text))
             {
-                queries += $"(firstName LIKE '%{nameSearch.Text}%' OR lastName LIKE '%{nameSearch.Text}%')";
+                string[] parts = nameSearch.Text.Split(',');
+                string lastQuery = parts[0];
+                string firstQuery = parts.Length>1?parts[1]:"";
+                queries += $"(firstName LIKE '%{firstQuery}%' AND lastName LIKE '%{lastQuery}%')";
             }
             if(gradeSelect.SelectedItem != null && gradeSelect.SelectedItem != "any")
             {
