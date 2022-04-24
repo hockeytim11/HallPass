@@ -14,9 +14,13 @@ namespace HallPass
         public string grade { get; set; }
         public string homeroomTeacher { get; set; }
 
+        public object[] toRow() { 
+            return new object[] {studentNumber, lastName, firstName, grade, homeroomTeacher};
+        }
+
         public override string ToString()
         {
-            return firstName + " " + lastName;
+            return lastName + ", " + firstName;
         }
     }
 }

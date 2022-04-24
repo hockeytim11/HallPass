@@ -28,20 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HallPassForm));
             this.morningRadio = new System.Windows.Forms.RadioButton();
             this.afternoonRadio = new System.Windows.Forms.RadioButton();
-            this.studentSearch = new System.Windows.Forms.TextBox();
-            this.studentList = new System.Windows.Forms.ListBox();
             this.PrintButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.labelPreview = new System.Windows.Forms.Label();
+            this.studentsSearch = new System.Windows.Forms.DataGridView();
+            this.gradeSelect = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.nameSearch = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.homeroom = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.studentBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.studentsSearch)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.studentBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // morningRadio
             // 
             this.morningRadio.AutoSize = true;
-            this.morningRadio.Location = new System.Drawing.Point(377, 25);
+            this.morningRadio.Location = new System.Drawing.Point(721, 12);
             this.morningRadio.Name = "morningRadio";
             this.morningRadio.Size = new System.Drawing.Size(63, 17);
             this.morningRadio.TabIndex = 0;
@@ -52,34 +60,18 @@
             // afternoonRadio
             // 
             this.afternoonRadio.AutoSize = true;
-            this.afternoonRadio.Location = new System.Drawing.Point(446, 25);
+            this.afternoonRadio.Location = new System.Drawing.Point(790, 12);
             this.afternoonRadio.Name = "afternoonRadio";
-            this.afternoonRadio.Size = new System.Drawing.Size(71, 17);
+            this.afternoonRadio.Size = new System.Drawing.Size(95, 17);
             this.afternoonRadio.TabIndex = 1;
             this.afternoonRadio.TabStop = true;
-            this.afternoonRadio.Text = "Afternoon";
+            this.afternoonRadio.Text = "Passing Period";
             this.afternoonRadio.UseVisualStyleBackColor = true;
-            // 
-            // studentSearch
-            // 
-            this.studentSearch.Location = new System.Drawing.Point(12, 25);
-            this.studentSearch.Name = "studentSearch";
-            this.studentSearch.Size = new System.Drawing.Size(326, 20);
-            this.studentSearch.TabIndex = 2;
-            this.studentSearch.TextChanged += new System.EventHandler(this.studentSearch_TextChanged);
-            // 
-            // studentList
-            // 
-            this.studentList.FormattingEnabled = true;
-            this.studentList.Location = new System.Drawing.Point(12, 51);
-            this.studentList.Name = "studentList";
-            this.studentList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.studentList.Size = new System.Drawing.Size(326, 368);
-            this.studentList.TabIndex = 3;
             // 
             // PrintButton
             // 
-            this.PrintButton.Location = new System.Drawing.Point(713, 400);
+            this.PrintButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.PrintButton.Location = new System.Drawing.Point(1116, 578);
             this.PrintButton.Name = "PrintButton";
             this.PrintButton.Size = new System.Drawing.Size(75, 23);
             this.PrintButton.TabIndex = 4;
@@ -87,40 +79,122 @@
             this.PrintButton.UseVisualStyleBackColor = true;
             this.PrintButton.Click += new System.EventHandler(this.PrintButton_Click);
             // 
+            // labelPreview
+            // 
+            this.labelPreview.AutoSize = true;
+            this.labelPreview.Location = new System.Drawing.Point(718, 32);
+            this.labelPreview.Name = "labelPreview";
+            this.labelPreview.Size = new System.Drawing.Size(0, 13);
+            this.labelPreview.TabIndex = 7;
+            // 
+            // studentsSearch
+            // 
+            this.studentsSearch.AllowDrop = true;
+            this.studentsSearch.AllowUserToAddRows = false;
+            this.studentsSearch.AllowUserToDeleteRows = false;
+            this.studentsSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.studentsSearch.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
+            this.studentsSearch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.studentsSearch.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.studentsSearch.Location = new System.Drawing.Point(12, 51);
+            this.studentsSearch.Name = "studentsSearch";
+            this.studentsSearch.ReadOnly = true;
+            this.studentsSearch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.studentsSearch.Size = new System.Drawing.Size(700, 550);
+            this.studentsSearch.TabIndex = 8;
+            // 
+            // gradeSelect
+            // 
+            this.gradeSelect.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.gradeSelect.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.gradeSelect.FormattingEnabled = true;
+            this.gradeSelect.Items.AddRange(new object[] {
+            "any"});
+            this.gradeSelect.Location = new System.Drawing.Point(118, 25);
+            this.gradeSelect.Name = "gradeSelect";
+            this.gradeSelect.Size = new System.Drawing.Size(49, 21);
+            this.gradeSelect.Sorted = true;
+            this.gradeSelect.TabIndex = 9;
+            this.gradeSelect.Text = "any";
+            this.gradeSelect.SelectedIndexChanged += new System.EventHandler(this.gradeSelect_SelectedIndexChanged);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Search";
+            this.label1.Size = new System.Drawing.Size(72, 13);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Search Name";
             // 
-            // labelPreview
+            // nameSearch
             // 
-            this.labelPreview.AutoSize = true;
-            this.labelPreview.Location = new System.Drawing.Point(385, 72);
-            this.labelPreview.Name = "labelPreview";
-            this.labelPreview.Size = new System.Drawing.Size(35, 13);
-            this.labelPreview.TabIndex = 7;
-            this.labelPreview.Text = "label2";
+            this.nameSearch.Location = new System.Drawing.Point(12, 25);
+            this.nameSearch.Name = "nameSearch";
+            this.nameSearch.Size = new System.Drawing.Size(100, 20);
+            this.nameSearch.TabIndex = 11;
+            this.nameSearch.TextChanged += new System.EventHandler(this.nameSearch_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(115, 9);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(36, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Grade";
+            // 
+            // homeroom
+            // 
+            this.homeroom.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.homeroom.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.homeroom.FormattingEnabled = true;
+            this.homeroom.Items.AddRange(new object[] {
+            "any"});
+            this.homeroom.Location = new System.Drawing.Point(173, 25);
+            this.homeroom.Name = "homeroom";
+            this.homeroom.Size = new System.Drawing.Size(121, 21);
+            this.homeroom.Sorted = true;
+            this.homeroom.TabIndex = 13;
+            this.homeroom.Text = "any";
+            this.homeroom.SelectedIndexChanged += new System.EventHandler(this.homeroom_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(170, 9);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(58, 13);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Homeroom";
+            // 
+            // studentBindingSource
+            // 
+            this.studentBindingSource.DataSource = typeof(HallPass.Student);
             // 
             // HallPassForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 435);
-            this.Controls.Add(this.labelPreview);
+            this.ClientSize = new System.Drawing.Size(1203, 613);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.homeroom);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.nameSearch);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.gradeSelect);
+            this.Controls.Add(this.studentsSearch);
+            this.Controls.Add(this.labelPreview);
             this.Controls.Add(this.PrintButton);
-            this.Controls.Add(this.studentList);
-            this.Controls.Add(this.studentSearch);
             this.Controls.Add(this.afternoonRadio);
             this.Controls.Add(this.morningRadio);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "HallPassForm";
             this.Text = "Hall Pass";
             this.Load += new System.EventHandler(this.HallPassForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.studentsSearch)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.studentBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -130,11 +204,16 @@
 
         private System.Windows.Forms.RadioButton morningRadio;
         private System.Windows.Forms.RadioButton afternoonRadio;
-        private System.Windows.Forms.TextBox studentSearch;
-        private System.Windows.Forms.ListBox studentList;
         private System.Windows.Forms.Button PrintButton;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelPreview;
+        private System.Windows.Forms.DataGridView studentsSearch;
+        private System.Windows.Forms.BindingSource studentBindingSource;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox nameSearch;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox homeroom;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox gradeSelect;
     }
 }
 
