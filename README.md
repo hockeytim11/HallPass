@@ -1,1 +1,1 @@
-# HallPass
+![](TardyLoggerLogo.png)
