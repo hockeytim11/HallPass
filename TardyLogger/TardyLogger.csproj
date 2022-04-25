@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FD5D47CA-793C-41D7-9AEE-DCA4458CD320}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>HallPass</RootNamespace>
-    <AssemblyName>HallPass</AssemblyName>
+    <RootNamespace>TardyLogger</RootNamespace>
+    <AssemblyName>TardyLogger</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -40,12 +40,13 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\HallPass\</OutputPath>
+    <OutputPath>bin\TardyLogger\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CsvHelper, Version=27.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
@@ -110,16 +111,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Student.cs" />
-    <Compile Include="HallPassForm.cs">
+    <Compile Include="TardyLoggerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HallPassForm.Designer.cs">
-      <DependentUpon>HallPassForm.cs</DependentUpon>
+    <Compile Include="TardyLoggerForm.Designer.cs">
+      <DependentUpon>TardyLoggerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="HallPassForm.resx">
-      <DependentUpon>HallPassForm.cs</DependentUpon>
+    <EmbeddedResource Include="TardyLoggerForm.resx">
+      <DependentUpon>TardyLoggerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -129,6 +130,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="credentials.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

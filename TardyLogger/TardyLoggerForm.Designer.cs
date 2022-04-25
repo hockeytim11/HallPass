@@ -1,6 +1,6 @@
 ﻿namespace HallPass
 {
-    partial class HallPassForm
+    partial class TardyLoggerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HallPassForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TardyLoggerForm));
             this.morningRadio = new System.Windows.Forms.RadioButton();
             this.afternoonRadio = new System.Windows.Forms.RadioButton();
             this.PrintButton = new System.Windows.Forms.Button();

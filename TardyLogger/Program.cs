@@ -16,7 +16,7 @@ namespace HallPass
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new HallPassForm());
+            Application.Run(new TardyLoggerForm());
         }
     }
 }
