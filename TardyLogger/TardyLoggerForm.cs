@@ -18,7 +18,7 @@ using System.Windows.Forms;
 
 namespace HallPass
 {
-    public partial class HallPassForm : Form
+    public partial class TardyLoggerForm : Form
     {
 
         // Define request parameters.
@@ -29,7 +29,7 @@ namespace HallPass
         Font font;
         Font font2;
         PrinterSettings printSettings;
-        public HallPassForm()
+        public TardyLoggerForm()
         {
             InitializeComponent();
         }
