@@ -198,7 +198,7 @@
             this.studentIdLabel.TabIndex = 17;
             this.studentIdLabel.Text = "Student ID";
             // 
-            // TardyPassForm
+            // TardyLoggerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
