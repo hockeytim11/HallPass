@@ -1,0 +1,4 @@
+studentNumber,lastName,firstName,grade,homeroomTeacher,activeToday
+123456,Student,Test,1,"Teacher, Homerooom",1
+123457,Student,Test2,2,"Teacher, Homerooom",1
+123458,Student,Test2,3,"Teacher, Homerooom",1

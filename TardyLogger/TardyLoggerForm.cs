@@ -10,13 +10,12 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Drawing.Text;
 using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace HallPass
+namespace TardyLogger
 {
     public partial class TardyLoggerForm : Form
     {
@@ -33,7 +32,7 @@ namespace HallPass
         {
             InitializeComponent();
         }
-        private void HallPassForm_Load(object sender, EventArgs e)
+        private void TardyLogger_load(object sender, EventArgs e)
         {
 
             font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

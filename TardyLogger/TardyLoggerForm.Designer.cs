@@ -1,4 +1,4 @@
-﻿namespace HallPass
+﻿namespace TardyLogger
 {
     partial class TardyLoggerForm
     {
@@ -179,7 +179,7 @@
             // 
             // studentBindingSource
             // 
-            this.studentBindingSource.DataSource = typeof(HallPass.Student);
+            this.studentBindingSource.DataSource = typeof(TardyLogger.Student);
             // 
             // studentId
             // 
@@ -198,7 +198,7 @@
             this.studentIdLabel.TabIndex = 17;
             this.studentIdLabel.Text = "Student ID";
             // 
-            // HallPassForm
+            // TardyPassForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -217,9 +217,9 @@
             this.Controls.Add(this.afternoonRadio);
             this.Controls.Add(this.morningRadio);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "HallPassForm";
+            this.Name = "TardyLoggerForm";
             this.Text = "Farrell B. Howell ECE-8 School Tardy Pass System";
-            this.Load += new System.EventHandler(this.HallPassForm_Load);
+            this.Load += new System.EventHandler(this.TardyLogger_load);
             ((System.ComponentModel.ISupportInitialize)(this.studentsSearch)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.studentBindingSource)).EndInit();
             this.ResumeLayout(false);
