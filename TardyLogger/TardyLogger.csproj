@@ -50,6 +50,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>TardyLoggerIcon.ico</ApplicationIcon>
+    <AppConfig>App.$(Configuration).config</AppConfig>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CsvHelper, Version=27.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
@@ -135,6 +136,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="App.Debug.config" />
     <None Include="credentials.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -153,7 +155,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.*.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FOOTER.png">
