@@ -36,7 +36,7 @@ namespace TardyLogger
         {
 
             font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            font2 = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            font2 = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 
             studentsData.Columns.Add("studentNumber", typeof(string));
             studentsData.Columns.Add("lastName", typeof(string));
@@ -92,7 +92,6 @@ namespace TardyLogger
 
             var type = morningRadio.Checked ? "Morning Tardy" : "Passing Period Tardy";
             var time = DateTime.Now;
-            printLog.Items.Clear();
 
             foreach (DataGridViewRow student in studentsSearch.SelectedRows) {
                 string id = (string)student.Cells[0].Value;
@@ -106,13 +105,12 @@ STUDENT:
 ";
                 content2 = $@"
 DATE/TIME:
-{time.ToString("MMMM d, yyyy\nhh:mm tt")}
+{time.ToString("MMMM d, yyyy  -  hh:mm tt")}
 
 PASS TYPE:
 {type}
 ";
 
-                printLog.Items.Add($"STUDENT: {name} ID: {id} TIME: {time}");
                 PrintDocument doc = new PrintDocument();
                 doc.DocumentName = $"Tardy Pass for {name}";
 
@@ -123,6 +121,7 @@ PASS TYPE:
                 }
 
                 if (printSettings!=null) {
+                    printLog.Items.Add($"STUDENT: {name} ID: {id} TIME: {time}");
                     doc.QueryPageSettings += Doc_QueryPageSettings;
                     doc.PrinterSettings = printSettings;
                     doc.PrintPage += new PrintPageEventHandler(passPrint);
