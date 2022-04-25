@@ -8,6 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.Drawing.Text;
 using System.Globalization;
 using System.IO;
 using System.Threading;
@@ -17,17 +20,24 @@ namespace HallPass
 {
     public partial class HallPassForm : Form
     {
+
         // Define request parameters.
         String spreadsheetId = ConfigurationManager.AppSettings["sheet"];
         String tab = ConfigurationManager.AppSettings["tab"];
         DataTable studentsData = new DataTable();
         SheetsService service;
+        Font font;
+        Font font2;
+        PrinterSettings printSettings;
         public HallPassForm()
         {
             InitializeComponent();
         }
         private void HallPassForm_Load(object sender, EventArgs e)
         {
+
+            font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            font2 = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 
             studentsData.Columns.Add("studentNumber", typeof(string));
             studentsData.Columns.Add("lastName", typeof(string));
@@ -75,59 +85,99 @@ namespace HallPass
 
         }
 
+        String content = "";
+        String content2 = "";
         private void PrintButton_Click(object sender, EventArgs e)
         {
-            var type = morningRadio.Checked ? "Morning Pass" : "Passing Period";
+
+
+            var type = morningRadio.Checked ? "Morning Tardy" : "Passing Period Tardy";
             var time = DateTime.Now;
-            labelPreview.Text = "";
+            printLog.Items.Clear();
 
             foreach (DataGridViewRow student in studentsSearch.SelectedRows) {
                 string id = (string)student.Cells[0].Value;
-                string name = (string)student.Cells[1].Value + ", " + (string)student.Cells[2].Value;
+                string name = (string)student.Cells[2].Value + " " + (string)student.Cells[1].Value;
                 string grade = (string)student.Cells[3].Value;
                 string homeroom = (string)student.Cells[4].Value;
 
-                labelPreview.Text += $@"
-Type:     {type}
-Time:     {time}
-ID:       {id}
-Name:     {name}
-Homeroom: {homeroom}
-Grade:    {grade}
-            ";
+                content = $@"
+STUDENT:
+{name}
+";
+                content2 = $@"
+DATE/TIME:
+{time.ToString("MMMM d, yyyy\nhh:mm tt")}
 
-                var range = new ValueRange()
-                {
-                    Values = new List<IList<object>> { new List<object> {
-                    time.ToString(), type, id, name, grade, homeroom
-                } } };
-                var append = service.Spreadsheets.Values.Append(range, spreadsheetId, tab+"!A:A");
-                append.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
-                var resp = append.Execute();
+PASS TYPE:
+{type}
+";
+
+                printLog.Items.Add($"STUDENT: {name} ID: {id} TIME: {time}");
+                PrintDocument doc = new PrintDocument();
+                doc.DocumentName = $"Tardy Pass for {name}";
+
+                if (printSettings == null) {
+                    PrintDialog printDialog = new PrintDialog();
+                    if (printDialog.ShowDialog() == DialogResult.OK)
+                        printSettings = printDialog.PrinterSettings;
+                }
+
+                if (printSettings!=null) {
+                    doc.QueryPageSettings += Doc_QueryPageSettings;
+                    doc.PrinterSettings = printSettings;
+                    doc.PrintPage += new PrintPageEventHandler(passPrint);
+                    doc.Print();
+                
+                    var range = new ValueRange()
+                    {
+                        Values = new List<IList<object>> { new List<object> {
+                        time.ToString(), type, id, name, grade, homeroom
+                    } } };
+                    var append = service.Spreadsheets.Values.Append(range, spreadsheetId, tab+"!A:A");
+                    append.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
+                    var resp = append.Execute();
+                }
             }
+        }
 
+        private void Doc_QueryPageSettings(object sender, QueryPageSettingsEventArgs e)
+        {
+            e.PageSettings.Margins.Top = 0;
+            e.PageSettings.Margins.Bottom = 0;
+            e.PageSettings.Margins.Left = 0;
+            e.PageSettings.Margins.Right = 0;
         }
 
         private void updateFilter() {
             string queries = "";
-            if(!String.IsNullOrEmpty(nameSearch.Text))
-            {
-                string[] parts = nameSearch.Text.Split(',');
-                string lastQuery = parts[0];
-                string firstQuery = parts.Length>1?parts[1]:"";
-                queries += $"(firstName LIKE '%{firstQuery}%' AND lastName LIKE '%{lastQuery}%')";
-            }
-            if(gradeSelect.SelectedItem != null && gradeSelect.SelectedItem != "any")
-            {
-                if (queries.Length > 0) queries += " AND ";
-                queries += $"grade = '{gradeSelect.SelectedItem}'";
-            }
-            if (homeroom.SelectedItem != null && homeroom.SelectedItem != "any")
-            {
-                if (queries.Length > 0) queries += " AND ";
-                queries += $"homeroomTeacher = '{homeroom.SelectedItem}'";
+            if (!String.IsNullOrEmpty(studentId.Text)) {
+                queries = $"studentNumber LIKE '%{studentId.Text}'";
+            } else {
+                if (!String.IsNullOrEmpty(nameSearch.Text))
+                {
+                    string[] parts = nameSearch.Text.Split(',');
+                    string lastQuery = parts[0];
+                    string firstQuery = parts.Length > 1 ? parts[1] : "";
+                    queries += $"(firstName LIKE '%{firstQuery}%' AND lastName LIKE '%{lastQuery}%')";
+                }
+                if (gradeSelect.SelectedItem != null && gradeSelect.SelectedItem != "-ALL-")
+                {
+                    if (queries.Length > 0) queries += " AND ";
+                    queries += $"grade = '{gradeSelect.SelectedItem}'";
+                }
+                if (homeroom.SelectedItem != null && homeroom.SelectedItem != "-ALL-")
+                {
+                    if (queries.Length > 0) queries += " AND ";
+                    queries += $"homeroomTeacher = '{homeroom.SelectedItem}'";
+                }
             }
             studentsData.DefaultView.RowFilter = queries;
+        }
+
+        private void studentId_TextChanged(object sender, EventArgs e)
+        {
+            updateFilter();
         }
 
         private void nameSearch_TextChanged(object sender, EventArgs e)
@@ -144,5 +194,22 @@ Grade:    {grade}
         {
             updateFilter();
         }
+
+        private void passPrint(object sender, PrintPageEventArgs ev)
+        {
+            var fmt = new StringFormat();
+            fmt.Alignment = StringAlignment.Center;
+
+            ev.Graphics.DrawImage(Image.FromFile("HEADER.png"), new Rectangle(new Point(0,0), new Size(280,140)));
+            ev.Graphics.DrawString(content, font, Brushes.Black, new Point(140, 150), fmt);
+            ev.Graphics.DrawString(content2, font2, Brushes.Black, new Point(140, 230), fmt);
+            ev.Graphics.DrawImage(Image.FromFile("FOOTER.png"), new Rectangle(new Point(0, 390), new Size(280, 140)));
+        }
+
+        private void labelPreview_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
