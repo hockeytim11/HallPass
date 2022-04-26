@@ -54,11 +54,11 @@ namespace TardyLogger
             font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             font2 = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 
-            studentsData.Columns.Add("studentNumber", typeof(string));
-            studentsData.Columns.Add("lastName", typeof(string));
-            studentsData.Columns.Add("firstName", typeof(string));
-            studentsData.Columns.Add("grade", typeof(string));
-            studentsData.Columns.Add("homeroomTeacher", typeof(string));
+            studentsData.Columns.Add("StudentID", typeof(string));
+            studentsData.Columns.Add("LastName", typeof(string));
+            studentsData.Columns.Add("FirstName", typeof(string));
+            studentsData.Columns.Add("Grade", typeof(string));
+            studentsData.Columns.Add("HomeroomTeacher", typeof(string));
 
             var req = service.Spreadsheets.Values.Get(spreadsheetId, studentsSheet+"!A:E");
             var studentsResp = req.Execute();
@@ -67,6 +67,11 @@ namespace TardyLogger
 
             foreach (List<Object> student in studentsResp.Values)
             {
+                // google strips off trailing empty columns, make them empty strings
+                for (int missing = student.Count; missing < 5; missing++)
+                {
+                    student.Add("");
+                }
                 studentsData.Rows.Add(student.ToArray());
                 if (!gradeSelect.Items.Contains(student[3]))
                 {
@@ -146,24 +151,24 @@ PASS TYPE:
         private void updateFilter() {
             string queries = "";
             if (!String.IsNullOrEmpty(studentId.Text)) {
-                queries = $"studentNumber LIKE '%{studentId.Text}%'";
+                queries = $"StudentID LIKE '%{studentId.Text}%'";
             } else {
                 if (!String.IsNullOrEmpty(nameSearch.Text))
                 {
                     string[] parts = nameSearch.Text.Split(',');
                     string lastQuery = parts[0];
                     string firstQuery = parts.Length > 1 ? parts[1] : "";
-                    queries += $"(firstName LIKE '%{firstQuery.Trim()}%' AND lastName LIKE '%{lastQuery.Trim()}%')";
+                    queries += $"(FirstName LIKE '%{firstQuery.Trim()}%' AND LastName LIKE '%{lastQuery.Trim()}%')";
                 }
                 if (gradeSelect.SelectedItem != null && gradeSelect.SelectedItem != "-ALL-")
                 {
                     if (queries.Length > 0) queries += " AND ";
-                    queries += $"grade = '{gradeSelect.SelectedItem}'";
+                    queries += $"Grade = '{gradeSelect.SelectedItem}'";
                 }
                 if (homeroom.SelectedItem != null && homeroom.SelectedItem != "-ALL-")
                 {
                     if (queries.Length > 0) queries += " AND ";
-                    queries += $"homeroomTeacher = '{homeroom.SelectedItem}'";
+                    queries += $"HomeroomTeacher = '{homeroom.SelectedItem}'";
                 }
             }
             studentsData.DefaultView.RowFilter = queries;
