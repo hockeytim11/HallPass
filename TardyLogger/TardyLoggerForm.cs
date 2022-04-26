@@ -1,5 +1,4 @@
-﻿using CsvHelper;
-using Google.Apis.Auth.OAuth2;
+﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
@@ -10,8 +9,6 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Globalization;
-using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -22,7 +19,8 @@ namespace TardyLogger
 
         // Define request parameters.
         String spreadsheetId = ConfigurationManager.AppSettings["sheet"];
-        String tab = ConfigurationManager.AppSettings["tab"];
+        String logSheet = ConfigurationManager.AppSettings["log"];
+        String studentsSheet = ConfigurationManager.AppSettings["students"];
         DataTable studentsData = new DataTable();
         SheetsService service;
         Font font;
@@ -34,35 +32,6 @@ namespace TardyLogger
         }
         private void TardyLogger_load(object sender, EventArgs e)
         {
-
-            font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            font2 = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-
-            studentsData.Columns.Add("studentNumber", typeof(string));
-            studentsData.Columns.Add("lastName", typeof(string));
-            studentsData.Columns.Add("firstName", typeof(string));
-            studentsData.Columns.Add("grade", typeof(string));
-            studentsData.Columns.Add("homeroomTeacher", typeof(string));
-
-            using (var reader = new StreamReader("students.csv"))
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                
-                foreach (Student student in csv.GetRecords<Student>())
-                {
-                    studentsData.Rows.Add(student.toRow());
-                    if (!gradeSelect.Items.Contains(student.grade))
-                    {
-                        gradeSelect.Items.Add(student.grade);
-                    }
-                    if (!homeroom.Items.Contains(student.homeroomTeacher))
-                    {
-                        homeroom.Items.Add(student.homeroomTeacher);
-                    }
-                }
-            }
-            studentsSearch.DataSource = studentsData;
-
             UserCredential credential;
 
             // The file token.json stores the user's access and refresh tokens, and is created
@@ -70,7 +39,7 @@ namespace TardyLogger
             string credPath = "token.json";
             credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                 GoogleClientSecrets.FromFile("credentials.json").Secrets,
-                new string[]{"https://www.googleapis.com/auth/spreadsheets" },
+                new string[] { "https://www.googleapis.com/auth/spreadsheets" },
                 "user",
                 CancellationToken.None,
                 new FileDataStore(credPath, true)).Result;
@@ -82,6 +51,33 @@ namespace TardyLogger
                 ApplicationName = "Hall Pass",
             });
 
+            font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            font2 = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+
+            studentsData.Columns.Add("studentNumber", typeof(string));
+            studentsData.Columns.Add("lastName", typeof(string));
+            studentsData.Columns.Add("firstName", typeof(string));
+            studentsData.Columns.Add("grade", typeof(string));
+            studentsData.Columns.Add("homeroomTeacher", typeof(string));
+
+            var req = service.Spreadsheets.Values.Get(spreadsheetId, studentsSheet+"!A:E");
+            var studentsResp = req.Execute();
+            studentsResp.Values.RemoveAt(0); // remove header row
+
+
+            foreach (List<Object> student in studentsResp.Values)
+            {
+                studentsData.Rows.Add(student.ToArray());
+                if (!gradeSelect.Items.Contains(student[3]))
+                {
+                    gradeSelect.Items.Add(student[3]);
+                }
+                if (!homeroom.Items.Contains(student[4]))
+                {
+                    homeroom.Items.Add(student[4]);
+                }
+            }
+            studentsSearch.DataSource = studentsData;
         }
 
         String content = "";
@@ -132,7 +128,7 @@ PASS TYPE:
                         Values = new List<IList<object>> { new List<object> {
                         time.ToString(), type, id, name, grade, homeroom
                     } } };
-                    var append = service.Spreadsheets.Values.Append(range, spreadsheetId, tab+"!A:A");
+                    var append = service.Spreadsheets.Values.Append(range, spreadsheetId, logSheet+"!A:A");
                     append.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
                     var resp = append.Execute();
                 }
@@ -150,14 +146,14 @@ PASS TYPE:
         private void updateFilter() {
             string queries = "";
             if (!String.IsNullOrEmpty(studentId.Text)) {
-                queries = $"studentNumber LIKE '%{studentId.Text}'";
+                queries = $"studentNumber LIKE '%{studentId.Text}%'";
             } else {
                 if (!String.IsNullOrEmpty(nameSearch.Text))
                 {
                     string[] parts = nameSearch.Text.Split(',');
                     string lastQuery = parts[0];
                     string firstQuery = parts.Length > 1 ? parts[1] : "";
-                    queries += $"(firstName LIKE '%{firstQuery}%' AND lastName LIKE '%{lastQuery}%')";
+                    queries += $"(firstName LIKE '%{firstQuery.Trim()}%' AND lastName LIKE '%{lastQuery.Trim()}%')";
                 }
                 if (gradeSelect.SelectedItem != null && gradeSelect.SelectedItem != "-ALL-")
                 {
