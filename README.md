@@ -1,53 +1,54 @@
 ![](TardyLoggerLogo.png)
 
-Tardy Logger is an application designed for tracking and printing student tardy passes. At the moment, it is branded for Farrell B. Howell, but could easily be used for other schools.
+Tardy Logger is an application designed for both logging student tardies and printing tardy passes. Although it is branded for Farrell B. Howell ECE-8 School it  could easily be used for other schools but simply updating the header/footer image files.
 
 # Features:
 ![image](https://user-images.githubusercontent.com/1467409/165199711-2addd964-bbdd-4b71-b83c-37656eabc63c.png)
 
-## Student search
+## Student Search
 Accross the top of the page are search filters. They can be used to narrow the student list on the left of the screen.
 
 ### Student ID
-This does a partial text match on the Student ID field. 123 will match 123,1234,51234, etc.
+Seaches the 6-digit district-assigned Student ID number. The field uses a partial text match on the Student ID field from the data set. (123 will match 123,1234,51234, etc.)
 
 ### Student Name
-This support both first and last name searches in one box. The search pattern is Last,First
+Searches the student name with the ability to search for first and/or last name in the search field. Search pattern is LAST,FIRST.
+The search is case insensitive and will match any part of the name.
 
 ```
 S,J would match "Smith, John"
-,D would match "Guy, Dave"
+,D would match "Guy, Dave" and "Last, asdf"
+Smith,John would match "Smithson,Johnathan" and "Jones-Smith,John"
 ```
 
-Grade and Homeroom are both drop downs populated by the available data. They also have an -ALL- Option to remove the filter.
+Grade and Homeroom are drop down filters populated by the available data. They also have an '-ALL-' option to clear the filter.
 
 ## Pass Type
-Morning and Passing period changes the text on the pass for the various types.
+The school uses this applications for both Morning Tardy Passes, as well as Passing Period Tardy Passes. The pass type option is both logged in the Google Sheet and also printed on the physical pass.
 
 ## Pass Logs
-The right hand side of the screen show a log of printed passes. This log is only a quick view to see what has been printed this session. The log will reset at each application launch.
-
-The full log is stored in a google sheet. Each log entry is appended to the google sheet in addition to the app log.
+The right hand side of the screen show a temporary log of printed passes during the current session which resets at each application launch.
+The complete log is stored in a Google Sheet. Each log entry is appended to the Google Sheet in addition to the app log.
 
 # Printing
-This application is designed to work with a Pomono PL330 thermal printer. It formats the text to fit in the 80mm width paper. While it was designed with that printer in mind, it likely works with other printers.
-## Choosing a printer
-The first time you click print each time the application is launched, you are presented with a windows print dialog. The printer you choose here will be saved until next launch and reused for each pass print.
+This application is designed to print a physical tardy/hall pass using the Polono PL330 Receipt Printer and formatted to fit the default 80mm width thermal paper. While it was designed with that printer in mind, it likely works with other printers.
 
-## images
-This application has the schools logo, but you can easily replace the HEADER.png and FOOTER.png files with custom images. Be aware that positioning is hard coded at the moment, so try to keep the dimensions the same for best results.
+## Choosing a printer
+When you click to PRINT/LOG the first entry (when application is launched) you are presented with a windows print dialog and must select the thermal receipt printer you are using. The printer you choose is saved until you relaunch the application. The current printer is reused for each physical pass printed during the current session.
+
+## Images
+This application uses custom PNG files for the header and footer on the physical passes that are printed. Simply replace the HEADER.png and FOOTER.png files with your own custom images. Be aware that positioning is hard coded at the moment, so try to keep the dimensions the same for best results. Dimensions for the header and footer images are 2:1 (width:height).
 
 # Configuration
-There is not much to configure, except the google sheets document ID and Sheet Names for the student data source and the pass logs.
+There is not much to configure, except the Google Sheet ID and the Sheet Names for student data source and the pass log.
 
 ## exe config
-To configure the sheet, edit the TardyLogger.exe.config file. This application config uses JSON and allows for you to specify the sheet your google account has permissions to.
-
+To configure the sheet, edit the TardyLogger.exe.config file. This application config uses JSON and allows you to specify Google Sheets to which your account has access.
 To get your sheed id, create a sheet in google sheets and edit the sheet. The URL in your browser bar will have the ID:
 
-[https://docs.google.com/spreadsheets/d/**1o9dOdC6L3vVN09nvH4gRcXo-uP44XtE15UMeiCRkHG4**/edit#gid=767994701]()
+A spreadsheet ID can be extracted from its URL. For example, the spreadsheet ID in the URL https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0 is "abc1234567".
 
-The Sheet names need to match what you name then at the bottom of the sheet
+The Sheet Name must match what you name then at the bottom of the sheet:
 ![image](https://user-images.githubusercontent.com/1467409/165202224-a92ade4c-9d26-452a-9aa3-bd0eaa95d1d0.png)
 
 
@@ -65,7 +66,7 @@ The Sheet names need to match what you name then at the bottom of the sheet
 
 ## Students sheet
 
-The Students sheet needs to have 5 columns [Student ID	Last Name	First Name	Grade	Homeroom Teacher]. THe first row is ignored to allow for custom headers, so start your data on line2
+The Students sheet needs to have 5 columns [Student ID	Last Name	First Name	Grade	Homeroom Teacher]. The first row is ignored to allow for custom headers, so start your data on line2
 
 | Student ID | Last Name | First Name | Grade | Homeroom Teacher |
 |------------|-----------|------------|-------|------------------|
@@ -73,5 +74,5 @@ The Students sheet needs to have 5 columns [Student ID	Last Name	First Name	Grad
 | 456789 | lastName | Person | 2 | Panther, Pink |
 | 654321 | Bar | Foo | 3 | Tiger, Tony |
 
-## Log sheet
-The logging sheet will simply append any printed records to the first empty row in column A. Feel free to add/delete/edit rows, it shouldn't mess up the logging function. 
+## Log Sheet
+The Google Sheet will simply append any printed records to the first empty row in column A. Feel free to add/delete/edit rows, it shouldn't mess up the logging function. 
