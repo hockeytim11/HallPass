@@ -14,8 +14,10 @@ This does a partial text match on the Student ID field. 123 will match 123,1234,
 ### Student Name
 This support both first and last name searches in one box. The search pattern is Last,First
 
+```
 S,J would match "Smith, John"
 ,D would match "Guy, Dave"
+```
 
 Grade and Homeroom are both drop downs populated by the available data. They also have an -ALL- Option to remove the filter.
 
@@ -63,10 +65,13 @@ The Sheet names need to match what you name then at the bottom of the sheet
 
 ## Students sheet
 
-The students sheet needs to have 5 columns [Student ID	Last Name	First Name	Grade	Homeroom Teacher]. THe first row is ignored to allow for custom headers, so start your data on line2
+The Students sheet needs to have 5 columns [Student ID	Last Name	First Name	Grade	Homeroom Teacher]. THe first row is ignored to allow for custom headers, so start your data on line2
 
 | Student ID | Last Name | First Name | Grade | Homeroom Teacher |
-================================================================
+|------------|-----------|------------|-------|------------------|
 | 123456 | Student | Test | 1 | Teacher, Homeroom |
 | 456789 | lastName | Person | 2 | Panther, Pink |
 | 654321 | Bar | Foo | 3 | Tiger, Tony |
+
+## Log sheet
+The logging sheet will simply append any printed records to the first empty row in column A. Feel free to add/delete/edit rows, it shouldn't mess up the logging function. 
