@@ -177,10 +177,6 @@
             this.printLog.Size = new System.Drawing.Size(246, 563);
             this.printLog.TabIndex = 15;
             // 
-            // studentBindingSource
-            // 
-            this.studentBindingSource.DataSource = typeof(TardyLogger.Student);
-            // 
             // studentId
             // 
             this.studentId.Location = new System.Drawing.Point(12, 25);
