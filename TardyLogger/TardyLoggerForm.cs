@@ -127,14 +127,18 @@ PASS TYPE:
                     doc.PrinterSettings = printSettings;
                     doc.PrintPage += new PrintPageEventHandler(passPrint);
                     doc.Print();
-                
+
                     var range = new ValueRange()
                     {
-                        Values = new List<IList<object>> { new List<object> {
-                        time.ToString(), type, id, name, grade, homeroom
-                    } } };
-                    var append = service.Spreadsheets.Values.Append(range, spreadsheetId, logSheet+"!A:A");
+                        Values = new List<IList<object>> {
+                            new List<object> {
+                                time.ToString(), type, id, name, grade, homeroom
+                            }
+                        }
+                    };
+                    var append = service.Spreadsheets.Values.Append(range, spreadsheetId, logSheet+"!A1:A");
                     append.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
+                    append.InsertDataOption = SpreadsheetsResource.ValuesResource.AppendRequest.InsertDataOptionEnum.INSERTROWS;
                     var resp = append.Execute();
                 }
             }
