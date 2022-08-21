@@ -55,14 +55,11 @@
             // 
             // morningRadio
             // 
-            this.morningRadio.Appearance = System.Windows.Forms.Appearance.Button;
             this.morningRadio.AutoSize = true;
             this.morningRadio.Checked = true;
-            this.morningRadio.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(67)))), ((int)(((byte)(132)))));
-            this.morningRadio.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.morningRadio.Location = new System.Drawing.Point(489, 9);
             this.morningRadio.Name = "morningRadio";
-            this.morningRadio.Size = new System.Drawing.Size(71, 25);
+            this.morningRadio.Size = new System.Drawing.Size(77, 17);
             this.morningRadio.TabIndex = 0;
             this.morningRadio.TabStop = true;
             this.morningRadio.Text = "MORNING";
@@ -72,14 +69,11 @@
             // 
             // passingRadio
             // 
-            this.passingRadio.Appearance = System.Windows.Forms.Appearance.Button;
             this.passingRadio.AutoSize = true;
             this.passingRadio.BackColor = System.Drawing.SystemColors.Control;
-            this.passingRadio.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(67)))), ((int)(((byte)(132)))));
-            this.passingRadio.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.passingRadio.Location = new System.Drawing.Point(489, 40);
+            this.passingRadio.Location = new System.Drawing.Point(489, 32);
             this.passingRadio.Name = "passingRadio";
-            this.passingRadio.Size = new System.Drawing.Size(117, 25);
+            this.passingRadio.Size = new System.Drawing.Size(123, 17);
             this.passingRadio.TabIndex = 1;
             this.passingRadio.Text = "PASSING PERIODS";
             this.passingRadio.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -88,14 +82,11 @@
             // 
             // hallRadio
             // 
-            this.hallRadio.Appearance = System.Windows.Forms.Appearance.Button;
             this.hallRadio.AutoSize = true;
             this.hallRadio.BackColor = System.Drawing.SystemColors.Control;
-            this.hallRadio.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(67)))), ((int)(((byte)(132)))));
-            this.hallRadio.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.hallRadio.Location = new System.Drawing.Point(489, 71);
+            this.hallRadio.Location = new System.Drawing.Point(489, 55);
             this.hallRadio.Name = "hallRadio";
-            this.hallRadio.Size = new System.Drawing.Size(77, 25);
+            this.hallRadio.Size = new System.Drawing.Size(83, 17);
             this.hallRadio.TabIndex = 18;
             this.hallRadio.Text = "HALL PASS";
             this.hallRadio.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -123,11 +114,11 @@
             this.studentsSearch.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.studentsSearch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.studentsSearch.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.studentsSearch.Location = new System.Drawing.Point(12, 102);
+            this.studentsSearch.Location = new System.Drawing.Point(12, 91);
             this.studentsSearch.Name = "studentsSearch";
             this.studentsSearch.ReadOnly = true;
             this.studentsSearch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.studentsSearch.Size = new System.Drawing.Size(700, 523);
+            this.studentsSearch.Size = new System.Drawing.Size(700, 534);
             this.studentsSearch.TabIndex = 8;
             // 
             // gradeSelect
@@ -201,9 +192,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.printLog.FormattingEnabled = true;
-            this.printLog.Location = new System.Drawing.Point(718, 103);
+            this.printLog.Location = new System.Drawing.Point(718, 90);
             this.printLog.Name = "printLog";
-            this.printLog.Size = new System.Drawing.Size(246, 524);
+            this.printLog.Size = new System.Drawing.Size(246, 537);
             this.printLog.TabIndex = 15;
             // 
             // studentId
