@@ -121,6 +121,8 @@ TO: {to}
 ";
                 } else
                 {
+                    from = "";
+                    to = "";
                     content2 += $@"
 PASS TYPE:
 {type}
