@@ -9,8 +9,10 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+
 
 namespace TardyLogger
 {
@@ -91,14 +93,16 @@ namespace TardyLogger
         {
 
 
-            var type = morningRadio.Checked ? "Morning Tardy" : "Passing Period Tardy";
+            var type = morningRadio.Checked ? "Morning Tardy" : passingRadio.Checked ? "Passing Period Tardy" : "Hall Pass";
             var time = DateTime.Now;
 
             foreach (DataGridViewRow student in studentsSearch.SelectedRows) {
                 string id = (string)student.Cells[0].Value;
-                string name = (string)student.Cells[2].Value + " " + (string)student.Cells[1].Value;
+                string name = (string)student.Cells[1].Value + ", " + (string)student.Cells[2].Value;
                 string grade = (string)student.Cells[3].Value;
                 string homeroom = (string)student.Cells[4].Value;
+                string from = fromInput.Text;
+                string to = toInput.Text;
 
                 content = $@"
 STUDENT:
@@ -108,12 +112,23 @@ STUDENT:
 DATE/TIME:
 {time.ToString("MMMM d, yyyy  -  hh:mm tt")}
 
+";
+                if (hallRadio.Checked)
+                {
+                    content2 += $@"
+FROM: {from}
+TO: {to}
+";
+                } else
+                {
+                    content2 += $@"
 PASS TYPE:
 {type}
 ";
+                }
 
                 PrintDocument doc = new PrintDocument();
-                doc.DocumentName = $"Tardy Pass for {name}";
+                doc.DocumentName = $"{type} for {name}";
 
                 if (printSettings == null) {
                     PrintDialog printDialog = new PrintDialog();
@@ -132,7 +147,7 @@ PASS TYPE:
                     {
                         Values = new List<IList<object>> {
                             new List<object> {
-                                time.ToString(), type, id, name, grade, homeroom
+                                time.ToString(), type, id, name, grade, homeroom, from, to
                             }
                         }
                     };
@@ -151,18 +166,42 @@ PASS TYPE:
             e.PageSettings.Margins.Left = 0;
             e.PageSettings.Margins.Right = 0;
         }
+        private string EscapeLikeValue(string value)
+        {
+            StringBuilder sb = new StringBuilder(value.Length);
+            for (int i = 0; i < value.Length; i++)
+            {
+                char c = value[i];
+                switch (c)
+                {
+                    case ']':
+                    case '[':
+                    case '%':
+                    case '*':
+                        sb.Append("[").Append(c).Append("]");
+                        break;
+                    case '\'':
+                        sb.Append("''");
+                        break;
+                    default:
+                        sb.Append(c);
+                        break;
+                }
+            }
+            return sb.ToString();
+        }
 
         private void updateFilter() {
             string queries = "";
             if (!String.IsNullOrEmpty(studentId.Text)) {
-                queries = $"StudentID LIKE '%{studentId.Text}%'";
+                queries = $"StudentID LIKE '%{EscapeLikeValue(studentId.Text)}%'";
             } else {
                 if (!String.IsNullOrEmpty(nameSearch.Text))
                 {
                     string[] parts = nameSearch.Text.Split(',');
                     string lastQuery = parts[0];
                     string firstQuery = parts.Length > 1 ? parts[1] : "";
-                    queries += $"(FirstName LIKE '%{firstQuery.Trim()}%' AND LastName LIKE '%{lastQuery.Trim()}%')";
+                    queries += $"(FirstName LIKE '%{EscapeLikeValue(firstQuery.Trim())}%' AND LastName LIKE '%{EscapeLikeValue(lastQuery.Trim())}%')";
                 }
                 if (gradeSelect.SelectedItem != null && gradeSelect.SelectedItem != "-ALL-")
                 {
@@ -202,17 +241,29 @@ PASS TYPE:
         {
             var fmt = new StringFormat();
             fmt.Alignment = StringAlignment.Center;
-
-            ev.Graphics.DrawImage(Image.FromFile("HEADER.png"), new Rectangle(new Point(0,0), new Size(280,140)));
+            var headerFile = hallRadio.Checked ? "pass_header.png" : "tardy_header.png";
+            var footerFile = hallRadio.Checked ? "pass_footer.png" : "tardy_footer.png";
+            ev.Graphics.DrawImage(Image.FromFile(headerFile), new Rectangle(new Point(0,0), new Size(280,140)));
             ev.Graphics.DrawString(content, font, Brushes.Black, new Point(140, 150), fmt);
             ev.Graphics.DrawString(content2, font2, Brushes.Black, new Point(140, 230), fmt);
-            ev.Graphics.DrawImage(Image.FromFile("FOOTER.png"), new Rectangle(new Point(0, 390), new Size(280, 140)));
+            ev.Graphics.DrawImage(Image.FromFile(footerFile), new Rectangle(new Point(0, 390), new Size(280, 140)));
         }
 
-        private void labelPreview_Click(object sender, EventArgs e)
+        private void radio_CheckedChanged(object sender, EventArgs e)
         {
-
+            if(hallRadio.Checked)
+            {
+                toLabel.Show();
+                fromLabel.Show();
+                toInput.Show();
+                fromInput.Show();
+            } else
+            {
+                toLabel.Hide();
+                fromLabel.Hide();
+                toInput.Hide();
+                fromInput.Hide();
+            }
         }
-
     }
 }

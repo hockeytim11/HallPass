@@ -112,7 +112,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="App.config" />
-    <None Include="App.Debug.config" />
     <None Include="credentials.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -132,16 +131,22 @@
     <None Include="App.*.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FOOTER.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="pass_footer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="HEADER.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="pass_header.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="POS Printer Driver Setup V7.17_03.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TardyLoggerIcon.ico" />
+    <Content Include="tardy_footer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tardy_header.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
